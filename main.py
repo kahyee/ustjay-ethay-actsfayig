@@ -3,8 +3,12 @@ import os
 import requests
 from flask import Flask, send_file, Response
 from bs4 import BeautifulSoup
+import json
 
 app = Flask(__name__)
+
+
+template = """https://github.com/kahyee/ustjay-ethay-actsfayig.git"""
 
 
 def get_fact():
@@ -19,7 +23,17 @@ def get_fact():
 
 @app.route('/')
 def home():
-    return "FILL ME!"
+    fact = get_fact().strip()
+    payload = {"input_text": fact}
+    
+    
+    r = requests.post("https://hidden-journey-62459.herokuapp.com/piglatinize/", data = payload, allow_redirects=False)
+    url = r.headers['Location']
+    link = "<a href=" + "\"" + url+ "\"> click here </a>"
+    print(link)
+    
+    
+    return Response(response = link, mimetype="text")
 
 
 if __name__ == "__main__":
